@@ -1,0 +1,45 @@
+{
+  "id": "GCOM-C_20260108_nanaka_farm",
+  "collection": "GCOM-C",
+  "datetime": "2026-01-08T02:30:00Z",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          130.60750000000002,
+          32.703199999999995
+        ],
+        [
+          130.8075,
+          32.703199999999995
+        ],
+        [
+          130.8075,
+          32.9032
+        ],
+        [
+          130.60750000000002,
+          32.9032
+        ],
+        [
+          130.60750000000002,
+          32.703199999999995
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "temperature": 18.5,
+    "humidity": 68.0,
+    "ndvi_mean": 0.75,
+    "cloud_coverage": 5.2
+  },
+  "assets": {
+    "geotiff": {
+      "href": "https://data.earth.jaxa.jp/mock/GCOM-C/20260108/nanaka_farm.tif",
+      "type": "image/tiff; application=geotiff",
+      "title": "GeoTIFF Data"
+    }
+  }
+}
