@@ -1,0 +1,4 @@
+[2026-01-08T23:28:02.939360] [ERROR] ✗ JSON解析失敗: GC1SG1_2026010701D01D_LST.h5 - Expecting value: line 1 column 1 (char 0)
+[2026-01-08T23:28:04.310534] [ERROR] ✗ JSON解析失敗: GC1SG1_2026010701D01D_NDVI.h5 - Expecting value: line 1 column 1 (char 0)
+[2026-01-08T23:28:05.278399] [ERROR] ✗ JSON解析失敗: test_LST.h5 - Expecting value: line 1 column 1 (char 0)
+[2026-01-08T23:28:06.224324] [ERROR] ✗ JSON解析失敗: test_NDVI.h5 - Expecting value: line 1 column 1 (char 0)

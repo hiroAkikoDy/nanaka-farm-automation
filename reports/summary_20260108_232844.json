@@ -1,0 +1,21 @@
+{
+  "execution_time": "2026-01-08T23:29:02.562058",
+  "duration_seconds": 18.118175,
+  "data_collection": {
+    "total_files": 4,
+    "successful": 4,
+    "failed": 0
+  },
+  "ndvi_analysis": {
+    "count": 1,
+    "mean": 0.7253238567507836,
+    "trend": "stable",
+    "change_rate": 0.0
+  },
+  "lst_analysis": {
+    "count": 1,
+    "mean_celsius": 18.372465815115902,
+    "min": 18.372465815115902,
+    "max": 18.372465815115902
+  }
+}
