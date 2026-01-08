@@ -17,7 +17,11 @@ Nanaka Farm の農園管理自動化システム。Neo4jデータベースを使
 ### 1. 依存パッケージのインストール
 
 ```bash
+# Neo4j ドライバー
 pip install neo4j --break-system-packages
+
+# JAXA G-Portal APIクライアント（オプション）
+pip install gportal
 ```
 
 ### 2. Neo4j データベース
@@ -28,7 +32,32 @@ pip install neo4j --break-system-packages
 
 ## 機能
 
-### 1. JAXA Earth APIからの衛星データ取得（新機能）
+### 1. JAXA G-Portalからの衛星データ取得（最新）
+
+**スクリプト:** `scripts/jaxa_api_client.py`
+
+JAXA G-PortalからGCOM-C「しきさい」/SGLIデータを取得します。LST（地表面温度）とNDVI（植生指標）に対応。
+
+```bash
+# LST（地表面温度）データ取得
+python scripts/jaxa_api_client.py --lat 32.8032 --lon 130.7075 --product LST --download
+
+# NDVI（植生指標）データ取得
+python scripts/jaxa_api_client.py --lat 32.8032 --lon 130.7075 --product NDVI --download
+
+# モックモード（テスト用）
+python scripts/jaxa_api_client.py --lat 32.8032 --lon 130.7075 --product LST --mock --download
+```
+
+**環境変数:**
+- `GPORTAL_USERNAME`: G-Portalユーザー名
+- `GPORTAL_PASSWORD`: G-Portalパスワード
+
+**詳細:** [JAXA G-Portal API使用ガイド](docs/JAXA_GPORTAL_API.md)
+
+---
+
+### 1-B. JAXA Earth APIからの衛星データ取得（レガシー）
 
 **スクリプト:** `scripts/jaxa_api.py`
 
