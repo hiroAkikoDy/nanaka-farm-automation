@@ -85,6 +85,45 @@ python scripts/jaxa_api.py --lat 32.8032 --lon 130.7075 --days 7 --download
 
 **注意:** 現在はモック実装です。実際のAPIアクセスには `pystac-client` ライブラリが必要です。
 
+---
+
+### 1-C. GeoTIFF/HDF5データ処理（新機能）
+
+**スクリプト:** `scripts/geotiff_processor.py`
+
+ダウンロードしたGeoTIFF/HDF5ファイルを解析し、統計情報を抽出します。
+
+```bash
+# HDF5ファイル処理（LST）
+python scripts/geotiff_processor.py data/geotiff/test_LST.h5 \
+  --lat 32.8032 --lon 130.7075 --dataset LST
+
+# HDF5ファイル処理（NDVI）+ ヒストグラム生成
+python scripts/geotiff_processor.py data/geotiff/test_NDVI.h5 \
+  --lat 32.8032 --lon 130.7075 --dataset NDVI --viz
+```
+
+**パラメータ:**
+- `file`: GeoTIFF/HDF5ファイルパス
+- `--lat`, `--lon`: 中心座標
+- `--buffer`: バッファ距離（km、デフォルト: 5）
+- `--dataset`: データセット名（HDF5用）
+- `--viz`: ヒストグラム生成
+- `--output`: 結果JSONの保存先
+
+**出力:**
+- 統計情報（平均、中央値、標準偏差、最小・最大値、パーセンタイル）
+- ヒストグラム画像（`data/visualizations/`）
+- JSON形式の解析結果
+
+**依存パッケージ:**
+```bash
+pip install numpy h5py matplotlib
+pip install rasterio  # GeoTIFF処理用（オプション）
+```
+
+---
+
 ### 2. 農園情報の取得
 
 **スクリプト:** `scripts/farm_info.py`
