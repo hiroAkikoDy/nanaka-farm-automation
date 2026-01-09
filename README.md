@@ -1,452 +1,526 @@
-# Nanaka Farm Automation
+# 🌾 Nanaka Farm Automation System
 
-Nanaka Farm の農園管理自動化システム。Neo4jデータベースを使用して農園情報と衛星観測データを管理します。
+> 衛星データ × グラフDB × AI で実現する次世代農業データ管理システム
 
-## 概要
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Neo4j](https://img.shields.io/badge/Neo4j-5.x-008CC1.svg)](https://neo4j.com/)
+[![Flask](https://img.shields.io/badge/Flask-3.0-000000.svg)](https://flask.palletsprojects.com/)
 
-このプロジェクトは、Nanaka Farm（熊本県、座標: 32.8032°N, 130.7075°E）の農園情報と衛星観測データ（温度、湿度、NDVI）を管理するためのツール群です。
+---
 
-## 必要な環境
+## 📖 プロジェクト概要
 
-- Python 3.x
-- Neo4j データベース
-- neo4j Pythonドライバー
+**Nanaka Farm Automation System** は、JAXA衛星データを活用した次世代農業管理プラットフォームです。GCOM-C「しきさい」の観測データ（地表面温度・植生指標）をグラフデータベースで統合管理し、リアルタイムダッシュボードで可視化します。週次自動実行により、農園の健康状態を継続的にモニタリングできます。
 
-## セットアップ
+**対象ユーザー**: 農園経営者、農業IoT開発者、衛星データ分析研究者
 
-### 1. 依存パッケージのインストール
+---
 
+## ✨ 主要機能
+
+- 📡 **JAXA衛星データ自動収集** - GCOM-C/SGLIからLST・NDVIデータを自動取得
+- 🗄️ **Neo4jグラフDB統合管理** - 農園と観測データを関係性で管理
+- 📊 **リアルタイムダッシュボード** - Chart.js + Leaflet.jsによる可視化
+- 🔍 **異常検出アルゴリズム** - Z-scoreベースの植生異常アラート
+- ⏰ **週次自動実行** - スケジューラーによる無人運用
+- 🌍 **GeoJSON/QGIS連携** - 地理空間データのエクスポート機能
+
+---
+
+## 🎬 デモ
+
+### ダッシュボード画面
+![Dashboard Screenshot](docs/images/dashboard-preview.png)
+*リアルタイムNDVIトレンド、圃場マップ、作業時間分析を一画面で表示*
+
+### 実行例
 ```bash
-# Neo4j ドライバー
-pip install neo4j --break-system-packages
-
-# JAXA G-Portal APIクライアント
-pip install gportal
-
-# データ処理・可視化
-pip install numpy h5py matplotlib
-pip install rasterio  # GeoTIFF処理用（オプション）
-
-# スケジューラー
-pip install schedule
+# データ収集 → 分析 → ダッシュボード表示まで
+$ python scripts/collect_and_save_workflow.py --mock
+✓ JAXA APIからデータ取得完了
+✓ Neo4jに38件の観測データを保存
+✓ ダッシュボード起動: http://localhost:5000
 ```
 
-**gportalインストール確認:**
-```bash
-python -c "import gportal; print('gportal installed successfully')"
+---
+
+## 🏗️ アーキテクチャ
+
+```
+┌─────────────────────┐
+│ JAXA G-Portal API   │  (GCOM-C/SGLI衛星データ)
+└──────────┬──────────┘
+           │ HDF5 Download
+           ▼
+┌─────────────────────┐
+│ HDF5/GeoTIFF Parser │  (LST, NDVI抽出)
+└──────────┬──────────┘
+           │ JSON
+           ▼
+┌─────────────────────┐     ┌──────────────────┐
+│  Neo4j Graph DB     │◄────┤  Flask REST API  │
+│  (Farm + Satellite) │     │  (5 Endpoints)   │
+└──────────┬──────────┘     └────────┬─────────┘
+           │                         │
+           ▼                         ▼
+┌─────────────────────┐     ┌──────────────────┐
+│   Scheduler         │     │ Chart.js         │
+│   (週次自動実行)     │     │ Dashboard        │
+└─────────────────────┘     └──────────────────┘
 ```
 
-### 2. JAXA G-Portal 認証情報設定（実API使用時）
+---
+
+## 🚀 クイックスタート
+
+### 前提条件
+- Python 3.11以上
+- Neo4j 5.x（起動済み）
+- 8GB RAM推奨
+- OS: Windows 10/11, macOS, Linux
+
+### インストール（3ステップ）
 
 ```bash
-# 環境変数設定
+# 1. リポジトリのクローン
+git clone https://github.com/hiroAkikoDy/nanaka-farm-automation.git
+cd nanaka-farm-automation
+
+# 2. 依存パッケージのインストール
+pip install -r requirements.txt
+
+# 3. 環境変数の設定
+cp .env.example .env
+# .env ファイルを編集してJAXA G-PortalとNeo4j認証情報を入力
+```
+
+### 初回実行
+
+```bash
+# テストモードで動作確認（モックデータ使用）
+python scripts/collect_and_save_workflow.py --mock
+
+# APIサーバー起動
+python scripts/api_server.py
+
+# ダッシュボードを開く
+start dashboard/index.html  # Windows
+open dashboard/index.html   # macOS
+```
+
+ブラウザで `dashboard/index.html` を開くと、NDVIトレンドグラフと圃場マップが表示されます。
+
+---
+
+## 📋 詳細なインストール
+
+### 1. Python環境セットアップ
+
+```bash
+# Python 3.11+ を確認
+python --version  # Python 3.11.x 以上
+
+# 仮想環境の作成（推奨）
+python -m venv venv
+source venv/bin/activate  # Linux/macOS
+venv\Scripts\activate     # Windows
+```
+
+### 2. Neo4jインストール
+
+**Neo4j Desktop使用（推奨）**:
+1. [Neo4j Desktop](https://neo4j.com/download/) をダウンロード
+2. 新規データベース作成
+3. ユーザー: `neo4j`、パスワード: 任意（`.env`に設定）
+4. データベースを起動
+
+**Dockerを使用する場合**:
+```bash
+docker run -d \
+  --name neo4j \
+  -p 7474:7474 -p 7687:7687 \
+  -e NEO4J_AUTH=neo4j/your_password \
+  neo4j:5-community
+```
+
+### 3. 環境変数の設定
+
+`.env` ファイルを作成:
+
+```bash
+# JAXA G-Portal認証情報
+GPORTAL_USERNAME=your_username
+GPORTAL_PASSWORD=your_password
+
+# Neo4j接続情報
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=your_neo4j_password
+
+# メール通知（オプション）
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
+SENDER_EMAIL=your-email@gmail.com
+SENDER_PASSWORD=your-app-password
+RECIPIENT_EMAIL=admin@example.com
+```
+
+**JAXA G-Portalアカウント登録**: https://gportal.jaxa.jp/
+
+### 4. 依存パッケージのインストール
+
+```bash
+pip install -r requirements.txt
+```
+
+主な依存パッケージ:
+- `neo4j` - Neo4jドライバー
+- `flask`, `flask-cors` - REST APIサーバー
+- `h5py`, `numpy` - HDF5データ処理
+- `matplotlib` - データ可視化
+- `schedule` - 定期実行スケジューラー
+
+---
+
+## 💡 使用例
+
+### 基本的なワークフロー
+
+```bash
+# 1. データ収集（JAXA G-Portal API）
+python scripts/jaxa_api_client.py \
+  --lat 32.8032 --lon 130.7075 \
+  --product LST --download
+
+python scripts/jaxa_api_client.py \
+  --lat 32.8032 --lon 130.7075 \
+  --product NDVI --download
+
+# 2. HDF5データ解析
+python scripts/geotiff_processor.py \
+  data/geotiff/GC1SG1_20260108_LST.h5 \
+  --lat 32.8032 --lon 130.7075 \
+  --dataset LST --viz
+
+# 3. Neo4jに保存
+python scripts/save_weather.py \
+  --date 2026-01-08 \
+  --temperature 18.5 \
+  --humidity 68.0 \
+  --ndvi-avg 0.75
+
+# 4. データ確認
+python scripts/query_data.py
+
+# 5. GeoJSONエクスポート（QGIS用）
+python scripts/export_geojson.py
+```
+
+### 統合ワークフロー（推奨）
+
+```bash
+# 全処理を一括実行
+python scripts/collect_and_save_workflow.py --mock
+
+# 実APIモード（JAXA G-Portal認証が必要）
 export GPORTAL_USERNAME="your_username"
 export GPORTAL_PASSWORD="your_password"
-
-# Windows (PowerShell)
-$env:GPORTAL_USERNAME="your_username"
-$env:GPORTAL_PASSWORD="your_password"
+python scripts/collect_and_save_workflow.py
 ```
 
-**G-Portalアカウント登録**: https://gportal.jaxa.jp/
-
-詳細は [実API使用ガイド](docs/GPORTAL_REAL_API_SETUP.md) を参照してください。
-
-### 3. Neo4j データベース
-
-- URI: `bolt://localhost:7687`
-- ユーザー名: `neo4j`
-- パスワード: 環境変数 `NEO4J_PASSWORD` に設定（デフォルト: `nAnAkA0629`）
-
-## 機能
-
-### 1. JAXA G-Portalからの衛星データ取得（最新）
-
-**スクリプト:** `scripts/jaxa_api_client.py`
-
-JAXA G-PortalからGCOM-C「しきさい」/SGLIデータを取得します。LST（地表面温度）とNDVI（植生指標）に対応。
+### ダッシュボードの起動
 
 ```bash
-# LST（地表面温度）データ取得
-python scripts/jaxa_api_client.py --lat 32.8032 --lon 130.7075 --product LST --download
+# ターミナル1: APIサーバー起動
+python scripts/api_server.py
 
-# NDVI（植生指標）データ取得
-python scripts/jaxa_api_client.py --lat 32.8032 --lon 130.7075 --product NDVI --download
-
-# モックモード（テスト用）
-python scripts/jaxa_api_client.py --lat 32.8032 --lon 130.7075 --product LST --mock --download
+# ターミナル2: ブラウザでダッシュボードを開く
+start dashboard/index.html  # Windows
+open dashboard/index.html   # macOS
+xdg-open dashboard/index.html  # Linux
 ```
 
-**環境変数:**
-- `GPORTAL_USERNAME`: G-Portalユーザー名
-- `GPORTAL_PASSWORD`: G-Portalパスワード
+ダッシュボードURL: `file:///path/to/dashboard/index.html`
 
-**詳細:** [JAXA G-Portal API使用ガイド](docs/JAXA_GPORTAL_API.md)
-
----
-
-### 1-B. JAXA Earth APIからの衛星データ取得（レガシー）
-
-**スクリプト:** `scripts/jaxa_api.py`
-
-JAXA Earth APIから衛星観測データ（GCOM-C等）を検索し、GeoTIFF形式でダウンロードします。
+### 週次自動実行
 
 ```bash
-python scripts/jaxa_api.py --lat 32.8032 --lon 130.7075 --days 7 --download
-```
+# バックグラウンドで定期実行（毎週月曜 8:00）
+nohup python scripts/scheduler.py > logs/scheduler.log 2>&1 &
 
-**パラメータ:**
-- `--lat`: 緯度
-- `--lon`: 経度
-- `--days`: 過去何日分のデータを取得するか（デフォルト: 7日）
-- `--dataset`: データセット名（デフォルト: GCOM-C）
-- `--download`: GeoTIFFファイルをダウンロードする
-
-**出力:**
-- GeoTIFFファイル: `data/geotiff/`
-- メタデータJSON: `data/metadata/`
-- 観測データ（温度、湿度、NDVI等）をJSON形式で標準出力
-
-**参考リンク:**
-- [JAXA Earth API](https://data.earth.jaxa.jp/)
-- [データセット一覧](https://data.earth.jaxa.jp/en/datasets/)
-
-**注意:** 現在はモック実装です。実際のAPIアクセスには `pystac-client` ライブラリが必要です。
-
----
-
-### 1-C. GeoTIFF/HDF5データ処理（新機能）
-
-**スクリプト:** `scripts/geotiff_processor.py`
-
-ダウンロードしたGeoTIFF/HDF5ファイルを解析し、統計情報を抽出します。
-
-```bash
-# HDF5ファイル処理（LST）
-python scripts/geotiff_processor.py data/geotiff/test_LST.h5 \
-  --lat 32.8032 --lon 130.7075 --dataset LST
-
-# HDF5ファイル処理（NDVI）+ ヒストグラム生成
-python scripts/geotiff_processor.py data/geotiff/test_NDVI.h5 \
-  --lat 32.8032 --lon 130.7075 --dataset NDVI --viz
-```
-
-**パラメータ:**
-- `file`: GeoTIFF/HDF5ファイルパス
-- `--lat`, `--lon`: 中心座標
-- `--buffer`: バッファ距離（km、デフォルト: 5）
-- `--dataset`: データセット名（HDF5用）
-- `--viz`: ヒストグラム生成
-- `--output`: 結果JSONの保存先
-
-**出力:**
-- 統計情報（平均、中央値、標準偏差、最小・最大値、パーセンタイル）
-- ヒストグラム画像（`data/visualizations/`）
-- JSON形式の解析結果
-
-**依存パッケージ:**
-```bash
-pip install numpy h5py matplotlib
-pip install rasterio  # GeoTIFF処理用（オプション）
+# テストモード（即座に1回実行）
+python scripts/scheduler.py --test --mock
 ```
 
 ---
 
-### 2. 農園情報の取得
+## 📁 プロジェクト構造
 
-**スクリプト:** `scripts/farm_info.py`
-
-農園の基本情報を取得します。Neo4jに接続できない場合はダミーデータを返します。
-
-```bash
-python scripts/farm_info.py --lat 32.8032 --lon 130.7075
+```
+nanaka-farm-automation/
+├── .claude/
+│   ├── commands/           # カスタムコマンド
+│   │   ├── hello-farm.md
+│   │   └── collect-weather-data.md
+│   └── hooks/              # Git フック
+│       └── afterCodeChange.ts
+├── dashboard/
+│   └── index.html          # Chart.js ダッシュボード (575行)
+├── data/
+│   ├── geotiff/            # HDF5/GeoTIFFファイル
+│   ├── metadata/           # メタデータJSON
+│   └── visualizations/     # 生成されたグラフ
+├── docs/
+│   ├── DASHBOARD_TESTING.md
+│   ├── GPORTAL_REAL_API_SETUP.md
+│   ├── QGIS_VISUALIZATION.md
+│   └── SCHEDULER.md
+├── exports/
+│   ├── nanaka_farm_fields.geojson
+│   └── satellite_observations.geojson
+├── queries/
+│   ├── test.cypher
+│   └── visualization/      # Neo4j可視化クエリ (5ファイル)
+│       ├── 01_farm_overview.cypher
+│       ├── 02_temporal_data.cypher
+│       ├── 03_work_density.cypher
+│       ├── 04_seasonal_pattern.cypher
+│       └── 05_anomaly_detection.cypher
+├── scripts/
+│   ├── api_server.py       # Flask REST API (269行)
+│   ├── collect_and_save_workflow.py
+│   ├── export_geojson.py   # GeoJSONエクスポート (315行)
+│   ├── farm_info.py
+│   ├── geotiff_processor.py
+│   ├── jaxa_api_client.py
+│   ├── query_data.py
+│   ├── save_weather.py
+│   └── scheduler.py        # スケジューラー
+├── tests/                  # テストファイル
+│   └── test_api.py
+├── .env                    # 環境変数（.gitignoreで除外）
+├── .gitignore
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── LICENSE
+├── QUICKSTART.md
+├── README.md
+├── requirements.txt
+└── TEST_REPORT.md
 ```
 
-**出力例:**
+---
+
+## 🧪 テスト
+
+```bash
+# 全テスト実行
+pytest tests/ -v
+
+# カバレッジ測定
+pytest tests/ --cov=scripts --cov-report=html
+
+# 特定のテストのみ実行
+pytest tests/test_api.py -k "test_health_check"
+```
+
+---
+
+## 🔧 API仕様
+
+Flask REST APIは5つのエンドポイントを提供します:
+
+### `GET /api/health`
+ヘルスチェック
+
+**レスポンス例**:
 ```json
 {
-  "name": "Nanaka Farm",
-  "latitude": 32.8032,
-  "longitude": 130.7075,
-  "source": "dummy",
-  "timestamp": "2026-01-08T22:36:45.089787"
+  "status": "healthy",
+  "neo4j": "connected",
+  "timestamp": "2026-01-09T12:00:00"
 }
 ```
 
-### 3. 衛星観測データの保存
+### `GET /api/summary`
+サマリー情報
 
-**スクリプト:** `scripts/save_weather.py`
-
-日付、温度、湿度、NDVI平均値をNeo4jに保存します。
-
-```bash
-python scripts/save_weather.py --date 2026-01-08 --temperature 18.5 --humidity 68.0 --ndvi-avg 0.75
+**レスポンス例**:
+```json
+{
+  "totalFields": 1,
+  "totalArea": 10000,
+  "monthlyWorkHours": 120,
+  "avgNDVI": 0.752
+}
 ```
 
-**パラメータ:**
-- `--date`: 観測日（YYYY-MM-DD形式）
-- `--temperature`: 温度（℃）
-- `--humidity`: 湿度（%）
-- `--ndvi-avg`: NDVI平均値
+### `GET /api/ndvi-trend?days=7`
+NDVI時系列データ
 
-**出力例:**
-```
-✓ データ保存成功:
-  日付: 2026-01-08
-  温度: 18.5℃
-  湿度: 68.0%
-  NDVI平均: 0.75
-```
+**パラメータ**:
+- `days` (int, optional): 取得日数（デフォルト: 7）
 
-### 4. 観測データの照会
-
-**スクリプト:** `scripts/query_data.py`
-
-Neo4jに保存された観測データを取得して表示します。
-
-```bash
-python scripts/query_data.py
+**レスポンス例**:
+```json
+[
+  {"date": "01/01", "ndvi": 0.68},
+  {"date": "01/02", "ndvi": 0.71}
+]
 ```
 
-**出力例:**
-```
-📊 Nanaka Farm 観測データ:
-======================================================================
+### `GET /api/work-hours`
+圃場別作業時間
 
-観測 #1:
-  農園名: Nanaka Farm
-  日付: 2026-01-08
-  温度: 18.5℃
-  湿度: 68.0%
-  NDVI平均: 0.75
-
-合計: 1 件のデータ
-======================================================================
+**レスポンス例**:
+```json
+[
+  {"field": "圃場A", "hours": 35},
+  {"field": "圃場B", "hours": 28}
+]
 ```
 
-## Claude Code カスタムコマンド
+### `GET /api/fields`
+圃場位置情報とNDVI状態
 
-### `/hello-farm` コマンド
-
-Nanaka Farm の情報を表示するカスタムコマンドです。
-
-**定義ファイル:** `.claude/commands/hello-farm.md`
-
-Claude Code CLI を起動後、以下のコマンドで実行できます:
-
-```
-/hello-farm
-```
-
-内部的に `scripts/farm_info.py` を呼び出します。
-
-### `/collect-weather-data` コマンド（新機能）
-
-JAXA Earth APIからデータを取得し、Neo4jに保存する一連の処理を自動化します。
-
-**定義ファイル:** `.claude/commands/collect-weather-data.md`
-
-Claude Code CLI を起動後、以下のコマンドで実行できます:
-
-```
-/collect-weather-data
+**レスポンス例**:
+```json
+[
+  {
+    "id": 1,
+    "name": "Nanaka Farm",
+    "lat": 32.8032,
+    "lon": 130.7075,
+    "area": 10000,
+    "ndvi": 0.752,
+    "status": "healthy"
+  }
+]
 ```
 
-**処理フロー:**
-1. JAXA Earth APIから衛星データを検索
-2. GeoTIFFファイルをダウンロード
-3. メタデータを抽出
-4. Neo4jデータベースに保存
-
-詳細は `.claude/commands/collect-weather-data.md` を参照してください。
+詳細は [QUICKSTART.md](QUICKSTART.md) を参照してください。
 
 ---
 
-### 5. 自動スケジューラー（新機能）
-
-**スクリプト:** `scripts/scheduler.py`
-
-気象データ収集を自動的に定期実行します。
-
-**機能:**
-- 毎週月曜日 8:00 に自動実行
-- エラー時のメール通知（オプション）
-- 包括的なログ記録
-- テストモードでの即座実行
-
-**基本的な使用方法:**
-
-```bash
-# テスト実行（即座に1回実行）
-python scripts/scheduler.py --test --mock
-
-# 定期実行モード（毎週月曜日 8:00）
-python scripts/scheduler.py --mock
-
-# 実APIモード
-export GPORTAL_USERNAME="your_username"
-export GPORTAL_PASSWORD="your_password"
-python scripts/scheduler.py
-```
-
-**メール通知設定:**
-
-```bash
-# 環境変数で設定
-export SMTP_SERVER="smtp.gmail.com"
-export SMTP_PORT="587"
-export SENDER_EMAIL="your-email@gmail.com"
-export SENDER_PASSWORD="your-app-password"
-export RECIPIENT_EMAIL="admin@example.com"
-
-# スケジューラー起動
-python scripts/scheduler.py
-```
-
-**バックグラウンド実行（Linux/Mac）:**
-
-```bash
-# nohupで実行
-nohup python scripts/scheduler.py --mock > logs/scheduler_nohup.log 2>&1 &
-
-# systemdで実行（推奨）
-sudo systemctl enable nanaka-farm-scheduler
-sudo systemctl start nanaka-farm-scheduler
-```
-
-**バックグラウンド実行（Windows）:**
-
-タスクスケジューラーでシステム起動時に自動実行するよう設定できます。
-
-**詳細:** [スケジューラードキュメント](docs/SCHEDULER.md)
-
-**依存パッケージ:**
-```bash
-pip install schedule
-```
-
-## フック
-
-### afterCodeChange フック
-
-**ファイル:** `.claude/hooks/afterCodeChange.ts`
-
-`.cypher` ファイルの変更を検知して、自動的に構文チェックを実行します。
-
-**機能:**
-- 括弧、角括弧、波括弧のペアチェック
-- Cypherキーワードの存在確認
-- 構文エラーの検出と修正提案
-
-Claude Code CLI 実行中に `.cypher` ファイルを編集すると自動的に実行されます。
-
-## Cypherクエリ
-
-### サンプルクエリ
-
-**ファイル:** `queries/test.cypher`
-
-Nanaka Farmの観測データを取得するサンプルクエリです。
-
-```cypher
-// 最新5件の観測データを取得
-MATCH (f:Farm {name: 'Nanaka Farm'})-[:HAS_OBSERVATION]->(s:SatelliteData)
-RETURN f.name as farm_name,
-       f.latitude as lat,
-       f.longitude as lon,
-       s.date as observation_date,
-       s.temperature as temp,
-       s.humidity as humidity,
-       s.ndvi_avg as ndvi
-ORDER BY s.date DESC
-LIMIT 5;
-
-// 最新の観測データのみ取得
-MATCH (f:Farm {name: 'Nanaka Farm'})-[:HAS_OBSERVATION]->(s:SatelliteData)
-RETURN s
-ORDER BY s.date DESC
-LIMIT 1;
-```
-
-## データモデル
+## 📊 データモデル
 
 ### Neo4jグラフ構造
 
-```
-(Farm:Farm)
-  - name: String
-  - latitude: Float
-  - longitude: Float
+```cypher
+// 農園ノード
+(f:Farm {
+  name: "Nanaka Farm",
+  latitude: 32.8032,
+  longitude: 130.7075,
+  area: 10000
+})
 
-(SatelliteData:SatelliteData)
-  - date: Date
-  - temperature: Float
-  - humidity: Float
-  - ndvi_avg: Float
-  - created_at: DateTime
+// 衛星観測データノード
+(s:SatelliteData {
+  date: date("2026-01-08"),
+  temperature: 18.5,
+  humidity: 68.0,
+  ndvi_avg: 0.752,
+  created_at: datetime()
+})
 
-(Farm)-[:HAS_OBSERVATION]->(SatelliteData)
-```
-
-## 使用例
-
-### 完全なワークフロー（JAXA Earth API統合版）
-
-1. **JAXA Earth APIからデータ取得:**
-   ```bash
-   python scripts/jaxa_api.py --lat 32.8032 --lon 130.7075 --days 7 --download
-   ```
-
-2. **取得したデータをNeo4jに保存:**
-   ```bash
-   python scripts/save_weather.py --date 2026-01-08 --temperature 18.5 --humidity 68.0 --ndvi-avg 0.75
-   ```
-
-3. **保存したデータの確認:**
-   ```bash
-   python scripts/query_data.py
-   ```
-
-### 基本的なワークフロー（手動入力版）
-
-1. **農園情報の確認:**
-   ```bash
-   python scripts/farm_info.py --lat 32.8032 --lon 130.7075
-   ```
-
-2. **観測データの保存:**
-   ```bash
-   python scripts/save_weather.py --date 2026-01-08 --temperature 18.5 --humidity 68.0 --ndvi-avg 0.75
-   ```
-
-3. **データの確認:**
-   ```bash
-   python scripts/query_data.py
-   ```
-
-## トラブルシューティング
-
-### Neo4j接続エラー
-
-Neo4jに接続できない場合:
-1. Neo4jサービスが起動しているか確認
-2. `NEO4J_PASSWORD` 環境変数が正しく設定されているか確認
-3. URI (`bolt://localhost:7687`) が正しいか確認
-
-### 文字化け（Windows）
-
-すべてのスクリプトはWindows環境でのUTF-8出力に対応しています。それでも文字化けが発生する場合:
-
-```bash
-chcp 65001
+// リレーション
+(f)-[:HAS_OBSERVATION]->(s)
 ```
 
-を実行してから、スクリプトを実行してください。
+### サンプルクエリ
 
-## ライセンス
+```cypher
+// 最新7日間の平均NDVI
+MATCH (f:Farm)-[:HAS_OBSERVATION]->(s:SatelliteData)
+WHERE s.date >= date() - duration('P7D')
+RETURN AVG(s.ndvi_avg) AS avgNDVI;
 
-このプロジェクトはNanaka Farm専用の内部ツールです。
+// 異常値検出（Z-score > 2.0）
+MATCH (f:Farm)-[:HAS_OBSERVATION]->(s:SatelliteData)
+WITH AVG(s.ndvi_avg) AS mean, stdev(s.ndvi_avg) AS stddev
+MATCH (f:Farm)-[:HAS_OBSERVATION]->(s:SatelliteData)
+WITH s, abs(s.ndvi_avg - mean) / stddev AS zscore
+WHERE zscore > 2.0
+RETURN s.date, s.ndvi_avg, zscore
+ORDER BY zscore DESC;
+```
 
-## 作成者
+詳細は [queries/visualization/README.md](queries/visualization/README.md) を参照してください。
 
-Generated with Claude Code
+---
+
+## 🤝 コントリビューション
+
+コントリビューションを歓迎します！バグ報告、機能要望、プルリクエストをお待ちしています。
+
+詳細は [CONTRIBUTING.md](CONTRIBUTING.md) をご覧ください。
+
+### 開発フロー
+
+1. このリポジトリをFork
+2. 機能ブランチを作成 (`git checkout -b feature/amazing-feature`)
+3. 変更をコミット (`git commit -m 'feat: Add amazing feature'`)
+4. ブランチにプッシュ (`git push origin feature/amazing-feature`)
+5. プルリクエストを作成
+
+### コーディング規約
+
+- PEP 8準拠
+- Black フォーマッター使用
+- docstring必須（Google形式）
+- テストカバレッジ80%以上
+
+---
+
+## 📄 ライセンス
+
+このプロジェクトはMITライセンスの下で公開されています。詳細は [LICENSE](LICENSE) を参照してください。
+
+---
+
+## 👤 作者
+
+**古閑 弘晃 (Hiroaki Koga)**
+
+- GitHub: [@hiroAkikoDy](https://github.com/hiroAkikoDy)
+- プロジェクト: [Nanaka Farm Automation](https://github.com/hiroAkikoDy/nanaka-farm-automation)
+
+---
+
+## 🙏 謝辞
+
+このプロジェクトは以下の素晴らしいツール・サービスを使用しています:
+
+- **JAXA G-Portal** - 衛星データ提供
+- **Neo4j** - グラフデータベース
+- **Flask** - REST APIフレームワーク
+- **Chart.js** - データ可視化ライブラリ
+- **Leaflet.js** - 地図表示ライブラリ
+- **Claude by Anthropic** - AIアシスタント（開発支援）
+
+---
+
+## 📚 関連ドキュメント
+
+- [QUICKSTART.md](QUICKSTART.md) - 3ステップ起動ガイド
+- [TEST_REPORT.md](TEST_REPORT.md) - 統合テストレポート
+- [CHANGELOG.md](CHANGELOG.md) - 変更履歴
+- [docs/DASHBOARD_TESTING.md](docs/DASHBOARD_TESTING.md) - ダッシュボードテストガイド
+- [docs/QGIS_VISUALIZATION.md](docs/QGIS_VISUALIZATION.md) - QGIS可視化ガイド
+- [docs/SCHEDULER.md](docs/SCHEDULER.md) - スケジューラー詳細
+
+---
+
+## 🔗 リンク
+
+- [JAXA G-Portal](https://gportal.jaxa.jp/) - 衛星データポータル
+- [Neo4j Documentation](https://neo4j.com/docs/) - Neo4j公式ドキュメント
+- [GCOM-C/SGLI](https://suzaku.eorc.jaxa.jp/GCOM_C/index_j.html) - 衛星「しきさい」
+
+---
+
+<p align="center">
+  🌾 Generated with <a href="https://claude.com/claude-code">Claude Code</a>
+</p>

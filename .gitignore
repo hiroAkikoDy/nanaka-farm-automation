@@ -1,12 +1,27 @@
-# Environment variables
-.env
+# ============================================================================
+# Nanaka Farm Automation - Git Ignore
+# ============================================================================
 
+# ----------------------------------------------------------------------------
+# Environment & Secrets
+# ----------------------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+credentials.json
+
+# ----------------------------------------------------------------------------
 # Python
+# ----------------------------------------------------------------------------
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+
+# Distribution / packaging
 build/
 develop-eggs/
 dist/
@@ -19,33 +34,148 @@ parts/
 sdist/
 var/
 wheels/
+pip-wheel-metadata/
+share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
-# Virtual environments
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+test-results/
+
+# ----------------------------------------------------------------------------
+# Virtual Environments
+# ----------------------------------------------------------------------------
 venv/
 ENV/
 env/
+.venv
+env.bak/
+venv.bak/
+.python-version
 
-# IDEs
+# ----------------------------------------------------------------------------
+# IDEs & Editors
+# ----------------------------------------------------------------------------
+# VSCode
 .vscode/
+*.code-workspace
+
+# PyCharm
 .idea/
+*.iml
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
 *.swp
 *.swo
 *~
+.netrwhist
 
-# OS
+# Emacs
+*~
+\#*\#
+.\#*
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# ----------------------------------------------------------------------------
+# Operating System
+# ----------------------------------------------------------------------------
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
 Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
 
-# Logs
-logs/*.log
+# Linux
+*~
+.directory
+.Trash-*
 
-# Data files (optional - uncomment if needed)
+# ----------------------------------------------------------------------------
+# Logs & Temporary Files
+# ----------------------------------------------------------------------------
+logs/
+*.log
+*.out
+*.err
+*.tmp
+*.temp
+*.swp
+*.bak
+*.pid
+
+# ----------------------------------------------------------------------------
+# Neo4j
+# ----------------------------------------------------------------------------
+neo4j/data/
+neo4j/logs/
+.neo4j/
+
+# ----------------------------------------------------------------------------
+# Data Files (Large Files)
+# ----------------------------------------------------------------------------
+# Uncomment if you don't want to track large data files
 # data/geotiff/*.h5
 # data/geotiff/*.tif
+# data/geotiff/*.tiff
 # data/metadata/*.json
+# data/visualizations/*.png
+# data/visualizations/*.jpg
 
-# Reports
+# ----------------------------------------------------------------------------
+# Reports & Exports
+# ----------------------------------------------------------------------------
 # reports/*.json
+# exports/*.geojson
+
+# ----------------------------------------------------------------------------
+# Documentation Build
+# ----------------------------------------------------------------------------
+docs/_build/
+site/
+
+# ----------------------------------------------------------------------------
+# mypy
+# ----------------------------------------------------------------------------
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ----------------------------------------------------------------------------
+# Other
+# ----------------------------------------------------------------------------
+.vscode-test
+.pytest_cache/
+.coverage
+.tox/
