@@ -1,0 +1,696 @@
+{
+  "type": "FeatureCollection",
+  "name": "Satellite Observations",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-09",
+        "ndvi": 291.5599,
+        "temperature": 18.41,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-09",
+        "ndvi": 0.75,
+        "temperature": 20.0,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-09",
+        "ndvi": 291.5225,
+        "temperature": 18.37,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-09",
+        "ndvi": 0.7253,
+        "temperature": 20.0,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.72,
+        "temperature": 15.5,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.72,
+        "temperature": 15.5,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.72,
+        "temperature": 15.5,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.75,
+        "temperature": 18.5,
+        "humidity": 68.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.75,
+        "temperature": 18.5,
+        "humidity": 68.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.78,
+        "temperature": 20.0,
+        "humidity": 70.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 18.35,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 20.0,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 291.5225,
+        "temperature": 18.37,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7253,
+        "temperature": 20.0,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 18.35,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 20.0,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 18.35,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 20.0,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 291.5225,
+        "temperature": 18.37,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7253,
+        "temperature": 20.0,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 18.35,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 20.0,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 18.35,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 20.0,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 291.5225,
+        "temperature": 18.37,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7253,
+        "temperature": 20.0,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 18.35,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 20.0,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 18.35,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 20.0,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 291.5225,
+        "temperature": 18.37,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7253,
+        "temperature": 20.0,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 18.35,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 20.0,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 18.35,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7,
+        "temperature": 20.0,
+        "humidity": 65.0,
+        "ndvi_status": "moderate"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 291.5225,
+        "temperature": 18.37,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          130.7075,
+          32.8032
+        ]
+      },
+      "properties": {
+        "farm_name": "Nanaka Farm",
+        "observation_date": "2026-01-08",
+        "ndvi": 0.7253,
+        "temperature": 20.0,
+        "humidity": 65.0,
+        "ndvi_status": "healthy"
+      }
+    }
+  ]
+}

@@ -20,11 +20,39 @@ Nanaka Farm の農園管理自動化システム。Neo4jデータベースを使
 # Neo4j ドライバー
 pip install neo4j --break-system-packages
 
-# JAXA G-Portal APIクライアント（オプション）
+# JAXA G-Portal APIクライアント
 pip install gportal
+
+# データ処理・可視化
+pip install numpy h5py matplotlib
+pip install rasterio  # GeoTIFF処理用（オプション）
+
+# スケジューラー
+pip install schedule
 ```
 
-### 2. Neo4j データベース
+**gportalインストール確認:**
+```bash
+python -c "import gportal; print('gportal installed successfully')"
+```
+
+### 2. JAXA G-Portal 認証情報設定（実API使用時）
+
+```bash
+# 環境変数設定
+export GPORTAL_USERNAME="your_username"
+export GPORTAL_PASSWORD="your_password"
+
+# Windows (PowerShell)
+$env:GPORTAL_USERNAME="your_username"
+$env:GPORTAL_PASSWORD="your_password"
+```
+
+**G-Portalアカウント登録**: https://gportal.jaxa.jp/
+
+詳細は [実API使用ガイド](docs/GPORTAL_REAL_API_SETUP.md) を参照してください。
+
+### 3. Neo4j データベース
 
 - URI: `bolt://localhost:7687`
 - ユーザー名: `neo4j`
@@ -231,6 +259,71 @@ Claude Code CLI を起動後、以下のコマンドで実行できます:
 4. Neo4jデータベースに保存
 
 詳細は `.claude/commands/collect-weather-data.md` を参照してください。
+
+---
+
+### 5. 自動スケジューラー（新機能）
+
+**スクリプト:** `scripts/scheduler.py`
+
+気象データ収集を自動的に定期実行します。
+
+**機能:**
+- 毎週月曜日 8:00 に自動実行
+- エラー時のメール通知（オプション）
+- 包括的なログ記録
+- テストモードでの即座実行
+
+**基本的な使用方法:**
+
+```bash
+# テスト実行（即座に1回実行）
+python scripts/scheduler.py --test --mock
+
+# 定期実行モード（毎週月曜日 8:00）
+python scripts/scheduler.py --mock
+
+# 実APIモード
+export GPORTAL_USERNAME="your_username"
+export GPORTAL_PASSWORD="your_password"
+python scripts/scheduler.py
+```
+
+**メール通知設定:**
+
+```bash
+# 環境変数で設定
+export SMTP_SERVER="smtp.gmail.com"
+export SMTP_PORT="587"
+export SENDER_EMAIL="your-email@gmail.com"
+export SENDER_PASSWORD="your-app-password"
+export RECIPIENT_EMAIL="admin@example.com"
+
+# スケジューラー起動
+python scripts/scheduler.py
+```
+
+**バックグラウンド実行（Linux/Mac）:**
+
+```bash
+# nohupで実行
+nohup python scripts/scheduler.py --mock > logs/scheduler_nohup.log 2>&1 &
+
+# systemdで実行（推奨）
+sudo systemctl enable nanaka-farm-scheduler
+sudo systemctl start nanaka-farm-scheduler
+```
+
+**バックグラウンド実行（Windows）:**
+
+タスクスケジューラーでシステム起動時に自動実行するよう設定できます。
+
+**詳細:** [スケジューラードキュメント](docs/SCHEDULER.md)
+
+**依存パッケージ:**
+```bash
+pip install schedule
+```
 
 ## フック
 

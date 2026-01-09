@@ -16,6 +16,10 @@ import os
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
+from dotenv import load_dotenv
+
+# .envファイルから環境変数を読み込み
+load_dotenv()
 
 # Windows環境でのUTF-8出力設定
 if sys.platform == 'win32':
@@ -117,7 +121,8 @@ def search_gcom_c_data_real(lat, lon, start_date, end_date, product_type="LST"):
             params={}
         )
 
-        products = res.products()
+        # productsはgeneratorなのでリストに変換
+        products = list(res.products())
         print(f"✓ {len(products)} 件のプロダクトが見つかりました")
 
         return products
@@ -189,7 +194,7 @@ def download_product_real(product, output_dir, username, password):
         gportal.username = username
         gportal.password = password
 
-        print(f"\n📥 ダウンロード中: {product.product_name}")
+        print(f"\n📥 ダウンロード中: {product.id}")
 
         # ダウンロード実行
         downloaded_files = gportal.download([product], local_dir=str(output_dir))
@@ -216,6 +221,9 @@ def download_product_mock(product, output_dir):
     Returns:
         ダウンロードしたファイルパス（モック）
     """
+    import h5py
+    import numpy as np
+
     product_id = product["product_id"]
     output_path = output_dir / product_id
 
@@ -223,16 +231,61 @@ def download_product_mock(product, output_dir):
     print(f"   URL: {product['download_url']}")
     print(f"   サイズ: {product['file_size_mb']} MB")
 
-    # ダミーファイル作成（HDF5ヘッダー）
-    with open(output_path, 'wb') as f:
-        # HDF5マジックナンバー
-        f.write(b'\x89HDF\r\n\x1a\n')
-        # ダミーデータ
-        f.write(b'\x00' * 10000)
+    # 有効なHDF5ファイル作成
+    try:
+        # プロダクトタイプ判定
+        if 'LST' in product_id:
+            dataset_type = 'LST'
+            mean_value = 291.5  # Kelvin
+            std_value = 5.0
+        else:  # NDVI
+            dataset_type = 'NDVI'
+            mean_value = 0.75
+            std_value = 0.1
 
-    print(f"✓ ダウンロード完了 (モック): {output_path}")
+        with h5py.File(output_path, 'w') as f:
+            # Geometry_dataグループ
+            geo_group = f.create_group('Geometry_data')
 
-    return output_path
+            # 緯度・経度グリッド（100x100）
+            lat_center = 32.8032
+            lon_center = 130.7075
+            lat_range = np.linspace(lat_center - 0.5, lat_center + 0.5, 100)
+            lon_range = np.linspace(lon_center - 0.5, lon_center + 0.5, 100)
+            lon_grid, lat_grid = np.meshgrid(lon_range, lat_range)
+
+            geo_group.create_dataset('Latitude', data=lat_grid)
+            geo_group.create_dataset('Longitude', data=lon_grid)
+
+            # Image_dataグループ
+            img_group = f.create_group('Image_data')
+
+            # データ生成（ランダム）
+            data = np.random.normal(mean_value, std_value, (100, 100))
+
+            # 値範囲調整
+            if dataset_type == 'NDVI':
+                data = np.clip(data, 0.0, 1.0)
+            else:  # LST
+                data = np.clip(data, 273.0, 320.0)  # 0℃～47℃
+
+            # データセット作成
+            ds = img_group.create_dataset(dataset_type, data=data)
+
+            # 属性追加
+            if dataset_type == 'NDVI':
+                ds.attrs['description'] = 'Normalized Difference Vegetation Index'
+                ds.attrs['units'] = 'dimensionless'
+            else:
+                ds.attrs['description'] = 'Land Surface Temperature'
+                ds.attrs['units'] = 'Kelvin'
+
+        print(f"✓ ダウンロード完了 (モック): {output_path}")
+        return output_path
+
+    except Exception as e:
+        print(f"✗ モックファイル作成エラー: {e}", file=sys.stderr)
+        return None
 
 
 def extract_metadata(product, file_path, is_mock=False):
